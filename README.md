@@ -23,7 +23,7 @@ A projekt egy korszerű e-kereskedelmi áruház adatbázisának tervezését és
 ### Fő komponensek:
 - **`sql/webshop_eav_modell.sql`:** 7 normalizált táblát tartalmazó DDL és DML szkript, idegen kulcs kényszerekkel, táblánként 10+ életszerű példasorral és a 4 kötelező típusú tesztlekérdezéssel.
 - **Interaktív Webes Bemutató (`index.html`, `assets/css/`, `assets/js/`):** Prezentáció-minőségű, billentyűzetvezérelt slide-deck rendszer a Milton Friedman Egyetem hivatalos arculatával, beépített **élő SQL terminállal** és adatbázis reset funkcióval.
-- **PowerPoint Prezentáció (`Webshop_EAV_Adatbazistervezes_Prezentacio.pptx`):** 16:9 szélesvásznú, vizsgakövetelményeknek megfelelő Moodle-feltölthető slide-deck.
+- **PowerPoint Prezentáció (`docs/Webshop_EAV_Adatbazistervezes_Prezentacio.pptx`):** 16:9 szélesvásznú, vizsgakövetelményeknek megfelelő Moodle-feltölthető slide-deck.
 - **Dockerizált Mikroarchitektúra:** MariaDB 11.4 adatbázisszerver, Python SQL Runner mikroszerviz, Adminer GUI és Nginx reverse proxy webszerver Traefik integrációval.
 
 ---
@@ -74,7 +74,6 @@ A rendszer 7 normalizált (3NF) relációból áll:
 ├── .dockerignore                              # Docker build kizárások
 ├── .gitignore                                 # Git kizárások (.env, mariadb_data/)
 ├── docker-compose.yml                         # Mikroarchitektúra definíció (Traefik routerekkel)
-├── Webshop_EAV_Adatbazistervezes_Prezentacio.pptx # Hivatalos beadandó prezentáció (16:9)
 ├── index.html                                 # 11 diás interaktív prezentáció
 ├── assets/                                    # Statikus webes eszközök
 │   ├── css/
@@ -95,7 +94,8 @@ A rendszer 7 normalizált (3NF) relációból áll:
 │   │   └── nginx.conf                         # Nginx reverse proxy és routing
 │   └── api/
 │       └── Dockerfile.api                     # Biztonságos Python SQL Runner build
-├── docs/                                      # Háttéranyagok és tanári feladatkiírás
+├── docs/                                      # Beadandó prezentáció, háttéranyagok és kiírás
+│   ├── Webshop_EAV_Adatbazistervezes_Prezentacio.pptx # Hivatalos beadandó prezentáció (16:9)
 │   ├── kiiras.md
 │   ├── sample_bachman.png
 │   └── milton_logo_szines.png

@@ -466,7 +466,7 @@ def create_deck():
         "✓ Dockerizált kivitelezés: MariaDB 11.4 + Adminer + Nginx"
     ], C_AMBER, 11)
 
-    output_path = os.path.join(os.path.dirname(__file__), "..", "Webshop_EAV_Adatbazistervezes_Prezentacio.pptx")
+    output_path = os.path.join(os.path.dirname(__file__), "..", "docs", "Webshop_EAV_Adatbazistervezes_Prezentacio.pptx")
     prs.save(output_path)
     print(f"Sikeres mentés: {output_path}")
 
