@@ -1,0 +1,6 @@
+node_modules
+.git
+mariadb_data
+__pycache__
+*.pyc
+.DS_Store

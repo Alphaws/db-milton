@@ -1,0 +1,86 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: webshop_eav_mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-webshop_eav_db}
+      MYSQL_USER: ${MYSQL_USER:-webshop_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-webshop_password}
+    # Portok kívülről lezárva publikus biztonság érdekében
+    expose:
+      - "3306"
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+      # Automatikus séma inicializálás és mintaadat betöltés:
+      - ./webshop_eav_modell.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    networks:
+      - webshop_net
+
+  sql_runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: webshop_eav_sql_runner
+    restart: unless-stopped
+    environment:
+      DB_HOST: mariadb
+      DB_USER: webshop_user
+      DB_PASSWORD: webshop_password
+      DB_NAME: webshop_eav_db
+    depends_on:
+      - mariadb
+    expose:
+      - "8000"
+    networks:
+      - webshop_net
+
+  adminer:
+    image: adminer:latest
+    container_name: webshop_eav_adminer
+    restart: unless-stopped
+    expose:
+      - "8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+    depends_on:
+      - mariadb
+    networks:
+      - webshop_net
+
+  presentation:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: webshop_eav_presentation
+    restart: unless-stopped
+    ports:
+      - "8086:80"
+    depends_on:
+      - sql_runner
+    networks:
+      - webshop_net
+      - traefik_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik_net}"
+      - "traefik.http.services.webshop-eav.loadbalancer.server.port=80"
+
+      # DEV Router (Local SSL via Traefik File Provider)
+      - "traefik.http.routers.webshop-eav-dev.rule=Host(`webshop-eav.localhost`)"
+      - "traefik.http.routers.webshop-eav-dev.entrypoints=web,websecure"
+      - "traefik.http.routers.webshop-eav-dev.tls=true"
+
+      # PROD Router (Let's Encrypt SSL db-milton.vane.hu)
+      - "traefik.http.routers.webshop-eav-prod.rule=Host(`${DOMAIN_PROD:-db-milton.vane.hu}`)"
+      - "traefik.http.routers.webshop-eav-prod.entrypoints=web,websecure"
+      - "traefik.http.routers.webshop-eav-prod.tls=true"
+      - "traefik.http.routers.webshop-eav-prod.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-myresolver}"
+
+networks:
+  webshop_net:
+    driver: bridge
+  traefik_net:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik_net}

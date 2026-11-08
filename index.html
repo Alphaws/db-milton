@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce EAV Adatbázis Modell | Milton Friedman Egyetem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient háttérfények -->
+  <div class="ambient ambient-teal" aria-hidden="true"></div>
+  <div class="ambient ambient-indigo" aria-hidden="true"></div>
+
+  <!-- Felső navigációs sáv -->
+  <header class="presentation-bar">
+    <div class="brand-wrapper">
+      <span class="brand-badge">ADB2 · Beadandó</span>
+      <span class="brand-title">Webshop <span>EAV</span> Modell</span>
+    </div>
+
+    <!-- Fejezettár (11 dia gyorsugrás) -->
+    <nav class="chapter-track" aria-label="Prezentáció diák">
+      <button class="chapter-btn is-active" data-chapter-link="0"><span>01</span>Nyitó</button>
+      <button class="chapter-btn" data-chapter-link="1"><span>02</span>Szkóp</button>
+      <button class="chapter-btn" data-chapter-link="2"><span>03</span>Bachman</button>
+      <button class="chapter-btn" data-chapter-link="3"><span>04</span>EAV Architektúra</button>
+      <button class="chapter-btn" data-chapter-link="4"><span>05</span>Termék Entitás</button>
+      <button class="chapter-btn" data-chapter-link="5"><span>06</span>Rendelési Alrendszer</button>
+      <button class="chapter-btn" data-chapter-link="6"><span>07</span>SQL Lekérdezés 1-2</button>
+      <button class="chapter-btn" data-chapter-link="7"><span>08</span>SQL Lekérdezés 3-4</button>
+      <button class="chapter-btn" data-chapter-link="8"><span>09</span>Interaktív SQL Konzol</button>
+      <button class="chapter-btn" data-chapter-link="9"><span>10</span>Docker Setup</button>
+      <button class="chapter-btn" data-chapter-link="10"><span>11</span>Összegzés</button>
+    </nav>
+
+    <div class="bar-meta">
+      <div class="status-pill">
+        <span class="status-pulse"></span>
+        <span>MariaDB 11.4 Online</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Fő Vetítőszínpad -->
+  <main class="slide-stage" id="presentationContainer">
+
+    <!-- DIA 01: Nyitódia -->
+    <section class="slide active" id="slide-0">
+      <!-- Iskolai Fejléc és Hivatalos Logó -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-line); flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1.25rem;">
+          <img src="milton_logo_feher.png" alt="Milton Friedman Egyetem hivatalos logó" style="height: 52px; width: auto; object-fit: contain;">
+          <div>
+            <div style="font-family: var(--display); font-size: 1.15rem; font-weight: 700; color: #fff; letter-spacing: -0.01em;">Milton Friedman Egyetem</div>
+            <div style="font-family: var(--mono); font-size: 0.8rem; color: var(--teal-light);">BH-MIT059-L: Adatbáziskezelés 2. · Oktató: Szabó István Gábor</div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <span class="status-pill" style="font-size: 0.8rem;">Féléves Feladat · 2026/27/1</span>
+        </div>
+      </div>
+
+      <div class="slide-header" style="text-align: left; margin-bottom: 1.5rem;">
+        <span class="slide-tag">Adatbázis Architektúra Tervezés · Webshop Katalógus</span>
+        <h1 class="slide-title">Korszerű Webshop Adatmodell<br><span class="gradient-text">Entity-Attribute-Value (EAV) Architektúrában</span></h1>
+        <p class="slide-lead">
+          Heterogén e-kereskedelmi termékkatalógus és tranzakciós rendelési alrendszer tervezése relációs adatbázisban a 3. normálforma (3NF) szigorú megtartásával.
+        </p>
+      </div>
+
+      <div class="deck-card" style="margin-bottom: 1.5rem; background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.25);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div><span style="color: var(--text-muted); font-size: 0.85rem;">Készítette (Hallgató):</span> <strong style="color: #fff; font-size: 1.15rem; margin-left: 0.5rem;">Szeness Imre</strong></div>
+          <div><span style="color: var(--text-muted); font-size: 0.85rem;">Neptun kód:</span> <strong style="color: var(--teal-light); font-family: var(--mono); font-size: 1.15rem; margin-left: 0.5rem;">TQJH7P</strong></div>
+          <div><span style="color: var(--text-muted); font-size: 0.85rem;">Kurzus:</span> <strong style="color: #fff; font-size: 0.95rem; margin-left: 0.5rem;">BH-MIT059-L</strong></div>
+          <div><span style="color: var(--text-muted); font-size: 0.85rem;">Oktató:</span> <strong style="color: var(--amber); font-size: 0.95rem; margin-left: 0.5rem;">Szabó István Gábor</strong></div>
+        </div>
+      </div>
+
+      <div class="deck-grid-3">
+        <div class="deck-card">
+          <div class="deck-card-icon">🎯</div>
+          <h3>Valós Piaci Probléma</h3>
+          <p>Hogyan tároljunk több ezer eltérő műszaki paraméterrel bíró terméket anélkül, hogy a táblát teleszórnánk üres NULL mezőkkel?</p>
+        </div>
+        <div class="deck-card">
+          <div class="deck-card-icon">⚡</div>
+          <h3>7 Normalizált Reláció</h3>
+          <p>Szigorú 3NF elvek, két összetett elsődleges kulcsos kapcsolótábla és származtatott kalkulált oszlopok alkalmazása.</p>
+        </div>
+        <div class="deck-card">
+          <div class="deck-card-icon">🐳</div>
+          <h3>100% Dockerizált</h3>
+          <p>Előre konfigurált MariaDB 11.4 és Adminer konténerizáció, automata DDL/DML migrációval és Nginx webszerverrel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIA 02: Projekt Szkóp és Problémafelvetés -->
+    <section class="slide" id="slide-1">
+      <div class="slide-header">
+        <span class="slide-tag">01. Dia · Probléma és Megoldás</span>
+        <h2 class="slide-title">Miért bukik el a hagyományos <span class="gradient-text">táblaszerkezet?</span></h2>
+        <p class="slide-lead">Egy általános webáruházban elektronikai cikkek, ruházat és háztartási gépek osztoznak a rendszeren.</p>
+      </div>
+
+      <div class="deck-grid-2">
+        <div class="deck-card" style="border-left: 4px solid var(--rose);">
+          <h3>❌ Hagyományos Anti-Pattern: Sparse Table</h3>
+          <p>Ha minden attribútumot egyetlen gigantikus <code>products</code> táblába próbálunk belezsúfolni (CPU, RAM, képernyőméret, cipőméret, anyag, wattszám):</p>
+          <ul style="margin: 1rem 0 0 1.25rem; color: var(--text-muted); font-size: 0.9rem;">
+            <li>Több száz oszlop, amelyek <strong>85-95%-a NULL érték</strong>.</li>
+            <li>Új termékkategória hozzáadásakor sémamódosítás (<code>ALTER TABLE</code>) szükséges a teljes éles adatbázison.</li>
+            <li>Nehézkes indexelés, pazarolt tárhely és alacsony I/O hatékonyság.</li>
+          </ul>
+        </div>
+
+        <div class="deck-card" style="border-left: 4px solid var(--teal-light);">
+          <h3>✅ Választott Megoldás: EAV Modell</h3>
+          <p>A dinamikus attribútumok relációkban tárolt sorként viselkednek az oszlopok bővítése helyett:</p>
+          <ul style="margin: 1rem 0 0 1.25rem; color: var(--text-muted); font-size: 0.9rem;">
+            <li><span class="eav-pill e">Entity</span> <strong>products:</strong> Csak a globális törzsadatok (SKU, név, ár, raktárkészlet).</li>
+            <li><span class="eav-pill a">Attribute</span> <strong>attributes:</strong> Metaadatok jegyzéke (szín, méret, tárhely, típus).</li>
+            <li><span class="eav-pill v">Value</span> <strong>product_attribute_values:</strong> Értékek kapcsolata összetett kulccsal.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIA 03: Bachman Ábra -->
+    <section class="slide" id="slide-2">
+      <div class="slide-header">
+        <span class="slide-tag">02. Dia · Bachman / ER Diagram</span>
+        <h2 class="slide-title">Logikai Kapcsolati <span class="gradient-text">Modell (Bachman Ábra)</span></h2>
+        <p class="slide-lead">Klasszikus Bachman konvenció: entitás téglalapok mezőlistával, valamint 1-től az N (több) felé mutató irányított relációs nyilakkal.</p>
+      </div>
+
+      <div class="deck-card" style="padding: 1rem; text-align: center; background: #090d16; border: 1px solid var(--border-glow);">
+        <img src="bachman_diagram.png" alt="Bachman diagram" style="max-width: 100%; height: auto; border-radius: var(--radius-sm); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      </div>
+
+      <div style="margin-top: 1rem; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted);">
+        <span>🔴 <strong># (PK)</strong> Elsődleges kulcs</span>
+        <span>🔵 <strong>* (FK)</strong> Idegen kulcs kényszer</span>
+        <span>🟡 <strong>#* (PK,FK)</strong> Összetett kapcsoló kulcs</span>
+        <span>➡️ <strong>1 : N</strong> Irányított kapcsolat (1 felől az N felé mutat)</span>
+      </div>
+    </section>
+
+    <!-- DIA 04: EAV Architektúra Működése -->
+    <section class="slide" id="slide-3">
+      <div class="slide-header">
+        <span class="slide-tag">03. Dia · Mélyfúrás</span>
+        <h2 class="slide-title">Az EAV adattárolás <span class="gradient-text">típusbiztos struktúrája</span></h2>
+        <p class="slide-lead">Hogyan garantáljuk az integritást és a helyes típuskezelést relációs környezetben?</p>
+      </div>
+
+      <div class="deck-grid-3">
+        <div class="deck-card">
+          <span class="eav-pill e">Entity</span>
+          <h3 style="margin-top:0.5rem;">products</h3>
+          <p>Minden fizikai vagy digitális cikk közös oszlopai: cikkszám (<code>sku</code>), megnevezés (<code>name</code>), alapár (<code>base_price</code>), státusz.</p>
+        </div>
+        <div class="deck-card">
+          <span class="eav-pill a">Attribute</span>
+          <h3 style="margin-top:0.5rem;">attributes</h3>
+          <p>Meghatározza a tulajdonság kódját (<code>color</code>, <code>ram_size</code>), magyar nevét, mértékegységét (GB, kg, col) és az elvárt SQL típust.</p>
+        </div>
+        <div class="deck-card">
+          <span class="eav-pill v">Value</span>
+          <h3 style="margin-top:0.5rem;">product_attribute_values</h3>
+          <p>Több típusos értékkolonnát használ (<code>value_varchar</code>, <code>value_number</code>, <code>value_datetime</code>), így a numerikus adatok matematikai műveletekben is közvetlenül számolhatók.</p>
+        </div>
+      </div>
+
+      <div class="deck-card" style="margin-top: 1.5rem;">
+        <h3>Összetett Elsődleges Kulcs (Composite Primary Key) Garancia:</h3>
+        <p>A <code>product_attribute_values</code> tábla elsődleges kulcsa <code>PRIMARY KEY (product_id, attribute_id)</code>. Ez garantálja, hogy egy termékhez egyetlen attribútumból legfeljebb <strong>pontosan egy érték</strong> tartozhat, megelőzve az adatütközést 3. normálformában.</p>
+      </div>
+    </section>
+
+    <!-- DIA 05: Termék és Kategória Táblák -->
+    <section class="slide" id="slide-4">
+      <div class="slide-header">
+        <span class="slide-tag">04. Dia · Katalógus Specifikáció</span>
+        <h2 class="slide-title">Kategória és <span class="gradient-text">Termék Táblák</span></h2>
+        <p class="slide-lead">Rekurzív fatermészetű kategóriák és a termék entitás mezői.</p>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tábla</th>
+              <th>Mező</th>
+              <th>Típus</th>
+              <th>Kulcs / Kényszer</th>
+              <th>Leírás</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>categories</code></td>
+              <td>category_id</td>
+              <td>INT</td>
+              <td><span class="badge-pk">PK</span> AUTO_INCREMENT</td>
+              <td>Kategória egyedi azonosítója</td>
+            </tr>
+            <tr>
+              <td><code>categories</code></td>
+              <td>parent_id</td>
+              <td>INT NULL</td>
+              <td><span class="badge-fk">FK</span> -> categories.category_id</td>
+              <td>Önhivatkozó rekurzió főkategóriákhoz</td>
+            </tr>
+            <tr>
+              <td><code>categories</code></td>
+              <td>name / slug</td>
+              <td>VARCHAR(100)</td>
+              <td>UNIQUE NOT NULL</td>
+              <td>Keresőbarát elérési név</td>
+            </tr>
+            <tr>
+              <td><code>products</code></td>
+              <td>product_id</td>
+              <td>INT</td>
+              <td><span class="badge-pk">PK</span> AUTO_INCREMENT</td>
+              <td>Mag entitás kulcsa</td>
+            </tr>
+            <tr>
+              <td><code>products</code></td>
+              <td>category_id</td>
+              <td>INT</td>
+              <td><span class="badge-fk">FK</span> -> categories.category_id</td>
+              <td>Besorolt kategória kapcsolat</td>
+            </tr>
+            <tr>
+              <td><code>products</code></td>
+              <td>sku / name</td>
+              <td>VARCHAR</td>
+              <td>sku: UNIQUE NOT NULL</td>
+              <td>Cikkszám és megjelenített név</td>
+            </tr>
+            <tr>
+              <td><code>products</code></td>
+              <td>base_price</td>
+              <td>DECIMAL(12,2)</td>
+              <td>NOT NULL</td>
+              <td>Fixpontos nettó/bruttó alapár</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DIA 06: Megrendelés és Ügyfélkezelés -->
+    <section class="slide" id="slide-5">
+      <div class="slide-header">
+        <span class="slide-tag">05. Dia · Tranzakciós Alrendszer</span>
+        <h2 class="slide-title">Vásárlók és <span class="gradient-text">Megrendelések</span></h2>
+        <p class="slide-lead">Megbízható rendeléskezelés állapotgéppel, szállítási adatokkal és származtatott oszlopokkal.</p>
+      </div>
+
+      <div class="deck-grid-2">
+        <div class="deck-card">
+          <h3><code>orders</code> Tábla (Rendelés Fejléc)</h3>
+          <p>Minden rendelés pontos időbélyeggel (<code>order_date</code>), státusszal (<code>pending</code>, <code>paid</code>, <code>shipped</code>, <code>cancelled</code>), végösszeggel és szállítási címmel rendelkezik.</p>
+          <div style="margin-top: 1rem;">
+            <span class="badge-pk">PK: order_id</span>
+            <span class="badge-fk" style="margin-left: 0.5rem;">FK: customer_id</span>
+          </div>
+        </div>
+
+        <div class="deck-card">
+          <h3><code>order_items</code> Tábla (Összetett Kulcs)</h3>
+          <p>Összeköti a rendelést a megvásárolt termékkel. Az elsődleges kulcsa összetett: <code>PRIMARY KEY (order_id, product_id)</code>.</p>
+          <p style="margin-top: 0.5rem; color: var(--teal-light); font-family: var(--mono); font-size: 0.85rem;">
+            subtotal = quantity * unit_price (STORED GENERATED ALWAYS)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIA 07: SQL 1 és 2 Lekérdezések -->
+    <section class="slide" id="slide-6">
+      <div class="slide-header">
+        <span class="slide-tag">06. Dia · SQL Használat 1. Rész</span>
+        <h2 class="slide-title">Egytáblás és <span class="gradient-text">Függvényes Lekérdezések</span></h2>
+        <p class="slide-lead">A feladatkiírás 1. és 2. kötelező lekérdezési mintája egymás alatt, kényelmes teljes szélességű eredménytáblával.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <!-- 1. Lekérdezés -->
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-badge">1. Egyszerű egytáblás szűrés és rendezés</span>
+            <div class="card-actions">
+              <button class="action-btn run-btn run-card-btn">▶ Futtatás</button>
+              <button class="action-btn copy-btn">Másolás</button>
+            </div>
+          </div>
+          <pre><code><span class="kw">SELECT</span> product_id, sku, name, base_price, stock_qty
+<span class="kw">FROM</span> products
+<span class="kw">WHERE</span> is_active = 1
+<span class="kw">ORDER BY</span> base_price <span class="kw">DESC</span>;</code></pre>
+          <div class="query-result-box"></div>
+          <div style="padding: 0.6rem 1rem; background: rgba(255,255,255,0.02); border-top: 1px solid var(--border-line); font-size: 0.78rem; color: var(--text-muted);">
+            ✓ Eredmény: Aktív termékek listája a legdrágább Dell XPS laptoptól az olcsóbb kiegészítőkig.
+          </div>
+        </div>
+
+        <!-- 2. Lekérdezés -->
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-badge">2. Függvényhasználat és Csoportosítás</span>
+            <div class="card-actions">
+              <button class="action-btn run-btn run-card-btn">▶ Futtatás</button>
+              <button class="action-btn copy-btn">Másolás</button>
+            </div>
+          </div>
+          <pre><code><span class="kw">SELECT</span> 
+    c.name <span class="kw">AS</span> kategoria_nev,
+    <span class="fn">COUNT</span>(p.product_id) <span class="kw">AS</span> termek_db,
+    <span class="fn">MIN</span>(p.base_price) <span class="kw">AS</span> legolcsobb_ar_huf,
+    <span class="fn">MAX</span>(p.base_price) <span class="kw">AS</span> legdragabb_ar_huf,
+    <span class="fn">ROUND</span>(<span class="fn">AVG</span>(p.base_price), 2) <span class="kw">AS</span> atlagos_ar_huf
+<span class="kw">FROM</span> categories c
+<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> c.category_id = p.category_id
+<span class="kw">GROUP BY</span> c.category_id, c.name
+<span class="kw">HAVING</span> termek_db > 0
+<span class="kw">ORDER BY</span> atlagos_ar_huf <span class="kw">DESC</span>;</code></pre>
+          <div class="query-result-box"></div>
+          <div style="padding: 0.6rem 1rem; background: rgba(255,255,255,0.02); border-top: 1px solid var(--border-line); font-size: 0.78rem; color: var(--text-muted);">
+            ✓ Függvények: COUNT, MIN, MAX, AVG, ROUND + HAVING feltétel.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIA 08: SQL 3 és 4 Lekérdezések -->
+    <section class="slide" id="slide-7">
+      <div class="slide-header">
+        <span class="slide-tag">07. Dia · SQL Használat 2. Rész</span>
+        <h2 class="slide-title">EAV Pivot JOIN és <span class="gradient-text">Allekérdezés (Subquery)</span></h2>
+        <p class="slide-lead">A feladatkiírás 3. és 4. kötelező lekérdezési mintája egymás alatt, kényelmes teljes szélességű nézetben.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <!-- 3. Lekérdezés -->
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-badge">3. Többtáblás összetett lekérdezés EAV pivotolással</span>
+            <div class="card-actions">
+              <button class="action-btn run-btn run-card-btn">▶ Futtatás</button>
+              <button class="action-btn copy-btn">Másolás</button>
+            </div>
+          </div>
+          <pre><code><span class="kw">SELECT</span> 
+    o.order_id,
+    <span class="fn">CONCAT</span>(c.last_name, <span class="st">' '</span>, c.first_name) <span class="kw">AS</span> vasarlo,
+    p.name <span class="kw">AS</span> termek,
+    oi.quantity <span class="kw">AS</span> db,
+    oi.subtotal <span class="kw">AS</span> osszesen,
+    <span class="fn">COALESCE</span>(pav_color.value_varchar, <span class="st">'-'</span>) <span class="kw">AS</span> szin,
+    <span class="fn">CONCAT</span>(<span class="fn">COALESCE</span>(pav_storage.value_number, 0), <span class="st">' GB'</span>) <span class="kw">AS</span> tarhely
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.customer_id
+<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
+<span class="kw">LEFT JOIN</span> product_attribute_values pav_color 
+    <span class="kw">ON</span> p.product_id = pav_color.product_id 
+    <span class="kw">AND</span> pav_color.attribute_id = 1
+<span class="kw">LEFT JOIN</span> product_attribute_values pav_storage 
+    <span class="kw">ON</span> p.product_id = pav_storage.product_id 
+    <span class="kw">AND</span> pav_storage.attribute_id = 2
+<span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'paid'</span>, <span class="st">'shipped'</span>);</code></pre>
+          <div class="query-result-box"></div>
+        </div>
+
+        <!-- 4. Lekérdezés -->
+        <div class="code-card">
+          <div class="code-header">
+            <span class="code-badge">4. Allekérdezés (HAVING SUM > AVG Subquery)</span>
+            <div class="card-actions">
+              <button class="action-btn run-btn run-card-btn">▶ Futtatás</button>
+              <button class="action-btn copy-btn">Másolás</button>
+            </div>
+          </div>
+          <pre><code><span class="kw">SELECT</span> 
+    c.customer_id,
+    <span class="fn">CONCAT</span>(c.last_name, <span class="st">' '</span>, c.first_name) <span class="kw">AS</span> vasarlo,
+    <span class="fn">COUNT</span>(o.order_id) <span class="kw">AS</span> rendelesek_szama,
+    <span class="fn">SUM</span>(o.total_amount) <span class="kw">AS</span> ossz_koltes
+<span class="kw">FROM</span> customers c
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">WHERE</span> o.status &lt;&gt; <span class="st">'cancelled'</span>
+<span class="kw">GROUP BY</span> c.customer_id, c.last_name, c.first_name
+<span class="kw">HAVING</span> <span class="fn">SUM</span>(o.total_amount) &gt; (
+    <span class="cm">-- Allekérdezés: rendelések globális átlaga</span>
+    <span class="kw">SELECT</span> <span class="fn">AVG</span>(total_amount) 
+    <span class="kw">FROM</span> orders 
+    <span class="kw">WHERE</span> status &lt;&gt; <span class="st">'cancelled'</span>
+)
+<span class="kw">ORDER BY</span> ossz_koltes <span class="kw">DESC</span>;</code></pre>
+          <div class="query-result-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIA 09: Interaktív Élő SQL Konzol -->
+    <section class="slide" id="slide-8">
+      <div class="slide-header">
+        <span class="slide-tag">08. Dia · Élő SQL Végrehajtás</span>
+        <h2 class="slide-title">Interaktív <span class="gradient-text">SQL Terminál</span></h2>
+        <p class="slide-lead">Futtass tetszőleges egyéni vagy előre összeállított SQL lekérdezést közvetlenül a MariaDB 11.4 adatbázisban!</p>
+      </div>
+
+      <div class="custom-console">
+        <div style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <label style="font-family: var(--mono); font-size: 0.8rem; color: var(--teal-light); font-weight: 600;">
+            ⚡ SQL Lekérdezés szerkesztő:
+          </label>
+          <select id="sqlPresetSelect" class="presets-select">
+            <option value="">-- Válassz előre összeállított sablont --</option>
+            <option value="SHOW TABLES;">1. Összes tábla listázása (SHOW TABLES)</option>
+            <option value="SELECT * FROM products LIMIT 5;">2. Termékek mag tábla (5 sor)</option>
+            <option value="SELECT * FROM attributes;">3. EAV Attribútum metaadatok jegyzéke</option>
+            <option value="SELECT p.name, a.name AS tulajdonsag, COALESCE(v.value_varchar, v.value_number) AS ertek, a.unit FROM product_attribute_values v JOIN products p ON v.product_id = p.product_id JOIN attributes a ON v.attribute_id = a.attribute_id WHERE p.product_id = 1;">4. iPhone 15 Pro összes EAV paramétere</option>
+            <option value="SELECT o.order_id, c.email, o.order_date, o.total_amount, o.status FROM orders o JOIN customers c ON o.customer_id = c.customer_id ORDER BY o.order_date DESC;">5. Vásárlók megrendeléseinek listája</option>
+            <option value="SELECT status, COUNT(*) AS db, SUM(total_amount) AS osszeg_huf FROM orders GROUP BY status;">6. Rendelések összesítése státuszonként</option>
+          </select>
+        </div>
+
+        <textarea id="customSqlText" class="console-textarea" placeholder="Írj be tetszőleges SQL utasítást... (pl. SELECT * FROM categories;)">SELECT * FROM products LIMIT 5;</textarea>
+
+        <div class="console-bar">
+          <div style="font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim);">
+            Csatlakozva: <span style="color: var(--teal-light);">mariadb:3306</span> | Adatbázis: <span style="color: #fff;">webshop_eav_db</span>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button id="resetDatabaseBtn" class="action-btn" style="background: rgba(244, 63, 94, 0.15); border-color: rgba(244, 63, 94, 0.4); color: #fda4af; padding: 0.5rem 1rem; font-size: 0.85rem;" title="Minden tábla újralétrehozása és az eredeti 10-10 példasor visszatöltése">
+              🔄 Teljes Adatbázis Reset
+            </button>
+            <button id="runCustomQueryBtn" class="action-btn run-btn" style="padding: 0.5rem 1.25rem; font-size: 0.85rem;">
+              ▶ Futtatás a szerveren
+            </button>
+          </div>
+        </div>
+
+        <div id="customQueryResultBox" class="query-result-box" style="margin-top: 1rem; border: 1px solid var(--border-line); border-radius: var(--radius-sm);"></div>
+      </div>
+    </section>
+
+    <!-- DIA 10: Docker Futtatás és Verifikáció -->
+    <section class="slide" id="slide-9">
+      <div class="slide-header">
+        <span class="slide-tag">09. Dia · Telepítés és Futtatás</span>
+        <h2 class="slide-title">Docker Architektúra és <span class="gradient-text">Verifikáció</span></h2>
+        <p class="slide-lead">Azonnal reprodukálható konténer-környezet izolált hálózattal.</p>
+      </div>
+
+      <div class="deck-grid-3">
+        <div class="deck-card">
+          <h3>MariaDB 11.4</h3>
+          <p>Port: <code>3306</code></p>
+          <p style="margin-top: 0.5rem;">Automatikus adatbázisépítés az <code>/docker-entrypoint-initdb.d</code> segítségével.</p>
+        </div>
+        <div class="deck-card">
+          <h3>Adminer GUI</h3>
+          <p>Port: <code>8085</code></p>
+          <p style="margin-top: 0.5rem;">Könnyen kezelhető, letisztult webes felület SQL lekérdezésekhez.</p>
+        </div>
+        <div class="deck-card">
+          <h3>Nginx + API Proxy</h3>
+          <p>Port: <code>8086</code></p>
+          <p style="margin-top: 0.5rem;">Közvetlen prezentációs webszerver élő SQL futtatási backenddel.</p>
+        </div>
+      </div>
+
+      <div class="code-card" style="margin-top: 1.5rem;">
+        <div class="code-header">
+          <span class="code-badge">Egyetlen paranccsal indítható terminálból:</span>
+        </div>
+        <pre><code><span class="cm"># Mappa megnyitása és indítás:</span>
+cd "/home/alphaws/BrainVault/20_Areas/Milton_Friedman_Egyetem/2026_27_1/Adatbáziskezelés 2/beadando3"
+docker compose up -d</code></pre>
+      </div>
+    </section>
+
+    <!-- DIA 11: Összegzés és Értékelési Szempontok -->
+    <section class="slide" id="slide-10">
+      <div class="slide-header">
+        <span class="slide-tag">10. Dia · Zárás</span>
+        <h2 class="slide-title">Követelmények <span class="gradient-text">Teljesülése</span></h2>
+        <p class="slide-lead">Minden tantárgyi előírás maradéktalanul megvalósítva és tesztelve.</p>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Követelmény</th>
+              <th>Elvárt</th>
+              <th>Megvalósított EAV Megoldás</th>
+              <th>Állapot</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Táblák száma</td>
+              <td>Min. 5-6 tábla</td>
+              <td><strong>7 reláció</strong> (categories, products, attributes, values, customers, orders, items)</td>
+              <td><span class="badge-pk" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.3)">TELJESÍTVE</span></td>
+            </tr>
+            <tr>
+              <td>Normalizálás</td>
+              <td>Legalább 3NF</td>
+              <td>Valódi 3. normálforma, tranzitív és részleges függőségektől mentes</td>
+              <td><span class="badge-pk" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.3)">TELJESÍTVE</span></td>
+            </tr>
+            <tr>
+              <td>Összetett kulcs</td>
+              <td>Legalább 1 tábla</td>
+              <td><strong>2 tábla is:</strong> product_attribute_values és order_items</td>
+              <td><span class="badge-pk" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.3)">TELJESÍTVE</span></td>
+            </tr>
+            <tr>
+              <td>Dátum mezők</td>
+              <td>Legalább 1 tábla</td>
+              <td>Több táblában: <code>created_at</code>, <code>registration_date</code>, <code>order_date</code></td>
+              <td><span class="badge-pk" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.3)">TELJESÍTVE</span></td>
+            </tr>
+            <tr>
+              <td>Példaadatok</td>
+              <td>Min. 10 sor / tábla</td>
+              <td>Minden tábla legalább 10 életszerű rekorddal feltöltve</td>
+              <td><span class="badge-pk" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.3)">TELJESÍTVE</span></td>
+            </tr>
+            <tr>
+              <td>Kötelező lekérdezések</td>
+              <td>4 típus</td>
+              <td>1. Egytáblás, 2. Függvényes, 3. EAV Pivot JOIN, 4. Allekérdezés</td>
+              <td><span class="badge-pk" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.3)">TELJESÍTVE</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Alsó Vetítő Vezérlősáv -->
+  <footer class="presenter-bar">
+    <div class="meter-line" aria-hidden="true">
+      <div class="meter-fill" id="scrollMeter"></div>
+    </div>
+
+    <div class="deck-counter" id="slideCounter">
+      01 / 10
+    </div>
+
+    <div style="font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted);">
+      Szeness Imre · <span style="color: var(--teal-light);">TQJH7P</span>
+    </div>
+
+    <div class="deck-nav-buttons">
+      <button class="nav-arrow-btn" id="prevSlide" title="Előző dia (Balra nyíl)">← Előző</button>
+      <button class="nav-arrow-btn" id="nextSlide" title="Következő dia (Jobbra nyíl / Szóköz)">Következő →</button>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
