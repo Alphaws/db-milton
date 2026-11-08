@@ -4,8 +4,8 @@ FROM python:3.12-alpine
 RUN apk add --no-cache mariadb-client
 
 WORKDIR /app
-COPY api_server.py /app/api_server.py
-COPY webshop_eav_modell.sql /app/webshop_eav_modell.sql
+COPY src/api/api_server.py /app/api_server.py
+COPY sql/webshop_eav_modell.sql /app/webshop_eav_modell.sql
 
 EXPOSE 8000
 

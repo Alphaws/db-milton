@@ -93,7 +93,7 @@ class RequestHandler(http.server.SimpleHTTPRequestHandler):
 
             sql_file_path = "/app/webshop_eav_modell.sql"
             if not os.path.exists(sql_file_path):
-                sql_file_path = "webshop_eav_modell.sql"
+                sql_file_path = os.path.join(os.path.dirname(__file__), "..", "..", "sql", "webshop_eav_modell.sql")
 
             try:
                 with open(sql_file_path, "r", encoding="utf-8") as f:

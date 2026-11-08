@@ -202,7 +202,7 @@ def draw_bachman_diagram():
     ax.text(50, 92.5, "Bachman-konvenció: Irányított nyíl mutat az 1-oldaltól a több (N) kapcsolat felé. Összetett kulcsok: (PK, FK)",
             ha='center', va='center', color='#38bdf8', fontsize=10, fontfamily='sans-serif')
 
-    out_file = os.path.join(os.path.dirname(__file__), "..", "bachman_diagram.png")
+    out_file = os.path.join(os.path.dirname(__file__), "..", "assets", "images", "bachman_diagram.png")
     plt.tight_layout()
     plt.savefig(out_file, facecolor=fig.get_facecolor(), edgecolor='none', bbox_inches='tight')
     plt.close()

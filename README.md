@@ -21,8 +21,8 @@
 A projekt egy korszerű e-kereskedelmi áruház adatbázisának tervezését és megvalósítását mutatja be, amely **Entity-Attribute-Value (EAV)** sémát alkalmaz a heterogén terméktulajdonságok skálázható tárolására, a 3. normálforma (3NF) szigorú megtartásával.
 
 ### Fő komponensek:
-- **`webshop_eav_modell.sql`:** 7 normalizált táblát tartalmazó DDL és DML szkript, idegen kulcs kényszerekkel, táblánként 10+ életszerű példasorral és a 4 kötelező típusú tesztlekérdezéssel.
-- **Interaktív Webes Bemutató (`index.html`, `styles.css`, `script.js`):** Prezentáció-minőségű, billentyűzetvezérelt slide-deck rendszer a Milton Friedman Egyetem hivatalos arculatával, beépített **élő SQL terminállal** és adatbázis reset funkcióval.
+- **`sql/webshop_eav_modell.sql`:** 7 normalizált táblát tartalmazó DDL és DML szkript, idegen kulcs kényszerekkel, táblánként 10+ életszerű példasorral és a 4 kötelező típusú tesztlekérdezéssel.
+- **Interaktív Webes Bemutató (`index.html`, `assets/css/`, `assets/js/`):** Prezentáció-minőségű, billentyűzetvezérelt slide-deck rendszer a Milton Friedman Egyetem hivatalos arculatával, beépített **élő SQL terminállal** és adatbázis reset funkcióval.
 - **PowerPoint Prezentáció (`Webshop_EAV_Adatbazistervezes_Prezentacio.pptx`):** 16:9 szélesvásznú, vizsgakövetelményeknek megfelelő Moodle-feltölthető slide-deck.
 - **Dockerizált Mikroarchitektúra:** MariaDB 11.4 adatbázisszerver, Python SQL Runner mikroszerviz, Adminer GUI és Nginx reverse proxy webszerver Traefik integrációval.
 
@@ -67,48 +67,40 @@ A rendszer 7 normalizált (3NF) relációból áll:
 
 ---
 
-## 🚀 4. Futtatás és Telepítés
-
-### A. Éles webes felület:
-Az alkalmazás automatikusan elérhető és interaktívan tesztelhető:
-👉 **[https://db-milton.vane.hu](https://db-milton.vane.hu)**
-
-### B. Helyi futtatás Dockerrel:
-```bash
-git clone https://github.com/Alphaws/db-milton.git
-cd db-milton
-docker compose up -d --build
-```
-Helyi elérések:
-- 🌐 **Webes bemutató:** `https://webshop-eav.localhost` vagy `http://localhost:8086`
-- 🗄️ **Adminer felület:** `http://localhost:8085`
-
----
-
-## 📁 5. Projekt Mappastruktúra
+## 📁 4. Rendszerezett Projekt Mappastruktúra
 
 ```
 ├── .env.example                               # Minta Docker környezeti változók
 ├── .dockerignore                              # Docker build kizárások
-├── .gitignore                                 # Git kizárások
-├── docker-compose.yml                         # Mikroarchitektúra definíció (Traefik integrációval)
-├── Dockerfile.web                             # Nginx prezentációs image build
-├── Dockerfile.api                             # Biztonságos Python SQL Runner build
-├── nginx.conf                                 # Nginx reverse proxy és routing
-├── api_server.py                              # Védett SQL REST API (rate-limiting, timeout, reset)
-├── webshop_eav_modell.sql                     # Hivatalos beadandó DDL/DML SQL állomány
+├── .gitignore                                 # Git kizárások (.env, mariadb_data/)
+├── docker-compose.yml                         # Mikroarchitektúra definíció (Traefik routerekkel)
 ├── Webshop_EAV_Adatbazistervezes_Prezentacio.pptx # Hivatalos beadandó prezentáció (16:9)
 ├── index.html                                 # 11 diás interaktív prezentáció
-├── styles.css                                 # Prezentációs stíluslap
-├── script.js                                  # Prezentációs és SQL motor vezérlés
-├── bachman_diagram.png                        # Szabványos mezőszintű Bachman ábra
-├── milton_logo_feher.png                      # Milton Friedman Egyetem hivatalos logója
-├── docs/                                      # Háttéranyagok és feladatkiírás
+├── assets/                                    # Statikus webes eszközök
+│   ├── css/
+│   │   └── styles.css                         # Prezentációs stíluslap
+│   ├── js/
+│   │   └── script.js                          # Prezentációs és SQL motor vezérlés
+│   └── images/
+│       ├── bachman_diagram.png                # Szabványos mezőszintű Bachman ábra
+│       └── milton_logo_feher.png              # Milton Friedman Egyetem hivatalos logója
+├── sql/
+│   └── webshop_eav_modell.sql                 # Hivatalos beadandó DDL/DML SQL állomány
+├── src/
+│   └── api/
+│       └── api_server.py                      # Védett SQL REST API (rate-limiting, timeout, reset)
+├── docker/
+│   ├── web/
+│   │   ├── Dockerfile.web                     # Nginx prezentációs image build
+│   │   └── nginx.conf                         # Nginx reverse proxy és routing
+│   └── api/
+│       └── Dockerfile.api                     # Biztonságos Python SQL Runner build
+├── docs/                                      # Háttéranyagok és tanári feladatkiírás
 │   ├── kiiras.md
 │   ├── sample_bachman.png
 │   └── milton_logo_szines.png
 └── scripts/                                   # Automatizációs szkriptek
+    ├── deploy.sh                              # Éles szerver szinkronizáló és deploy szkript
     ├── generate_bachman_diagram.py            # Matplotlib ábragenerátor
-    ├── generate_pptx.py                       # Python PPTX generáló szkript
-    └── deploy.sh                              # Éles szerver szinkronizáló és deploy szkript
+    └── generate_pptx.py                       # Python PPTX generáló szkript
 ```

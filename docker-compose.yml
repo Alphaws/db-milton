@@ -14,14 +14,14 @@ services:
     volumes:
       - ./mariadb_data:/var/lib/mysql
       # Automatikus séma inicializálás és mintaadat betöltés:
-      - ./webshop_eav_modell.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./sql/webshop_eav_modell.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
     networks:
       - webshop_net
 
   sql_runner:
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: docker/api/Dockerfile.api
     container_name: webshop_eav_sql_runner
     restart: unless-stopped
     environment:
@@ -52,7 +52,7 @@ services:
   presentation:
     build:
       context: .
-      dockerfile: Dockerfile.web
+      dockerfile: docker/web/Dockerfile.web
     container_name: webshop_eav_presentation
     restart: unless-stopped
     ports:

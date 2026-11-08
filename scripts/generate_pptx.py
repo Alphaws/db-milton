@@ -112,7 +112,7 @@ def create_deck():
     apply_bg(s1)
 
     # Milton Friedman Egyetem hivatalos logó elhelyezése
-    logo_path = os.path.join(os.path.dirname(__file__), "..", "milton_logo_feher.png")
+    logo_path = os.path.join(os.path.dirname(__file__), "..", "assets", "images", "milton_logo_feher.png")
     s1.shapes.add_picture(logo_path, Inches(1.0), Inches(0.55), Inches(3.2), Inches(0.9))
 
     tbox = s1.shapes.add_textbox(Inches(1.0), Inches(1.75), Inches(11.3), Inches(3.2))
@@ -192,7 +192,7 @@ def create_deck():
                "A 7 normalizált reláció mezőszintű Bachman ábrája 1:N irányított kapcsolatokkal és összetett kulcsokkal.")
 
     # A professzionális nagyfelbontású Bachman ábra beágyazása
-    bachman_img_path = os.path.join(os.path.dirname(__file__), "..", "bachman_diagram.png")
+    bachman_img_path = os.path.join(os.path.dirname(__file__), "..", "assets", "images", "bachman_diagram.png")
     s3.shapes.add_picture(bachman_img_path, Inches(0.8), Inches(2.0), Inches(11.73), Inches(5.1))
 
     # ==========================================
