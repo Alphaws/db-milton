@@ -24,7 +24,11 @@ A projekt egy korszerű e-kereskedelmi áruház adatbázisának tervezését és
 - **`sql/webshop_eav_modell.sql`:** 7 normalizált táblát tartalmazó DDL és DML szkript, idegen kulcs kényszerekkel, táblánként 10+ életszerű példasorral és a 4 kötelező típusú tesztlekérdezéssel.
 - **Interaktív Webes Bemutató (`index.html`, `assets/css/`, `assets/js/`):** Prezentáció-minőségű, billentyűzetvezérelt slide-deck rendszer a Milton Friedman Egyetem hivatalos arculatával, beépített **élő SQL terminállal** és adatbázis reset funkcióval.
 - **PowerPoint Prezentáció (`docs/Webshop_EAV_Adatbazistervezes_Prezentacio.pptx`):** 16:9 szélesvásznú, vizsgakövetelményeknek megfelelő Moodle-feltölthető slide-deck.
-- **Dockerizált Mikroarchitektúra:** MariaDB 11.4 adatbázisszerver, Python SQL Runner mikroszerviz, Adminer GUI és Nginx reverse proxy webszerver Traefik integrációval.
+- **Dockerizált Mikroarchitektúra:**
+  - **MariaDB 11.4:** Tranzakcionális relációs adatbázis motor inicializáló SQL betöltéssel és helyi adat-perzisztenciával (`./mariadb_data`).
+  - **Python SQL Runner mikroszerviz:** Védett belső REST API (rate-limiting, lekérdezés-időkorlát, reset).
+  - **Adminer GUI:** Webes adatbáziskezelő felület közvetlen adatbázis-inspekcióhoz és adminisztrációhoz (belső konténerport: `8080`).
+  - **Nginx webszerver:** Statikus prezentációs kiszolgáló és beépített reverse proxy (`/api/` végpont továbbítás) Traefik integrációval.
 
 ---
 
@@ -74,7 +78,7 @@ A rendszer 7 normalizált (3NF) relációból áll:
 ├── .dockerignore                              # Docker build kizárások
 ├── .gitignore                                 # Git kizárások (.env, mariadb_data/)
 ├── docker-compose.yml                         # Mikroarchitektúra definíció (Traefik routerekkel)
-├── index.html                                 # 11 diás interaktív prezentáció
+├── index.html                                 # 10 diás interaktív prezentáció (élő SQL futtatással)
 ├── assets/                                    # Statikus webes eszközök
 │   ├── css/
 │   │   └── styles.css                         # Prezentációs stíluslap
