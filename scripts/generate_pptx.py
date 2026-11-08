@@ -1,4 +1,5 @@
 import sys
+import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.enum.text import PP_ALIGN
@@ -111,7 +112,7 @@ def create_deck():
     apply_bg(s1)
 
     # Milton Friedman Egyetem hivatalos logó elhelyezése
-    logo_path = "/home/alphaws/BrainVault/20_Areas/Milton_Friedman_Egyetem/2026_27_1/Adatbáziskezelés 2/beadando3/milton_logo_feher.png"
+    logo_path = os.path.join(os.path.dirname(__file__), "..", "milton_logo_feher.png")
     s1.shapes.add_picture(logo_path, Inches(1.0), Inches(0.55), Inches(3.2), Inches(0.9))
 
     tbox = s1.shapes.add_textbox(Inches(1.0), Inches(1.75), Inches(11.3), Inches(3.2))
@@ -191,7 +192,7 @@ def create_deck():
                "A 7 normalizált reláció mezőszintű Bachman ábrája 1:N irányított kapcsolatokkal és összetett kulcsokkal.")
 
     # A professzionális nagyfelbontású Bachman ábra beágyazása
-    bachman_img_path = "/home/alphaws/BrainVault/20_Areas/Milton_Friedman_Egyetem/2026_27_1/Adatbáziskezelés 2/beadando3/bachman_diagram.png"
+    bachman_img_path = os.path.join(os.path.dirname(__file__), "..", "bachman_diagram.png")
     s3.shapes.add_picture(bachman_img_path, Inches(0.8), Inches(2.0), Inches(11.73), Inches(5.1))
 
     # ==========================================
@@ -465,7 +466,7 @@ def create_deck():
         "✓ Dockerizált kivitelezés: MariaDB 11.4 + Adminer + Nginx"
     ], C_AMBER, 11)
 
-    output_path = "/home/alphaws/BrainVault/20_Areas/Milton_Friedman_Egyetem/2026_27_1/Adatbáziskezelés 2/beadando3/Webshop_EAV_Adatbazistervezes_Prezentacio.pptx"
+    output_path = os.path.join(os.path.dirname(__file__), "..", "Webshop_EAV_Adatbazistervezes_Prezentacio.pptx")
     prs.save(output_path)
     print(f"Sikeres mentés: {output_path}")
 
